@@ -18,7 +18,7 @@ class InventoriesTableSeeder extends Seeder
             \App\Inventory::Create([
                 'name' => $faker->name,
                 'location' => $faker->city,
-                'rent' => $faker->randomFloat(2, 1, 100),
+                'rent' => $faker->randomNumber(2),
                 'isAvailable' => (int)$faker->boolean,
             ]);
         }
