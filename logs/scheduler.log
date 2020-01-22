@@ -1,4 +1,0 @@
-Running scheduled command: '/usr/bin/php' 'artisan' hour:chargeRent >> 'logs/scheduler.log' 2>&1
-Task About to Start
-Task Ended
-Result: Successful @ 2020-01-22 05:03:01

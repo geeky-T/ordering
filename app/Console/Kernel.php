@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('hour:chargeRent')
+        $schedule->command('hourly:chargeRent')
             ->hourly()
             ->before(function () {
                 echo "Task About to Start\n";
@@ -43,7 +43,7 @@ class Kernel extends ConsoleKernel
             ->onFailure(function (){
                 echo "Failed @ ".date('Y-m-d H:i:s')."\n";
             })
-            ->appendOutputTo('logs/scheduler.log');
+            ->appendOutputTo('storage/lcronogs/scheduler.log');
     }
 
     /**

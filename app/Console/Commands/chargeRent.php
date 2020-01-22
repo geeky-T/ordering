@@ -12,7 +12,7 @@ class chargeRent extends Command
      *
      * @var string
      */
-    protected $signature = 'hour:chargeRent';
+    protected $signature = 'hourly:chargeRent';
 
     /**
      * The console command description.
