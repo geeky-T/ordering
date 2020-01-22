@@ -2,8 +2,11 @@
 
 namespace App\Console;
 
+use CronFunctions\Renting;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Psy\Command\Command;
+use function foo\func;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +16,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\chargeRent::class
     ];
 
     /**
@@ -26,6 +29,21 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('hourly:chargeRent')
+            ->hourly()
+            ->before(function () {
+                echo "Task About to Start\n";
+            })
+            ->after(function (){
+                echo "Task Ended\nResult: ";
+            })
+            ->onSuccess(function (){
+                echo "Successful @ ".date('Y-m-d H:i:s')."\n";;
+            })
+            ->onFailure(function (){
+                echo "Failed @ ".date('Y-m-d H:i:s')."\n";
+            })
+            ->appendOutputTo('storage/lcronogs/scheduler.log');
     }
 
     /**
