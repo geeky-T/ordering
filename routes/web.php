@@ -14,4 +14,4 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/login','MainController@index');
+Route::post('submit','UserLoginController@index');

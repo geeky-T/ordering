@@ -14,7 +14,7 @@
             html, body {
                 background-color: #fff;
                 color: #636b6f;
-                font-family: 'Nunito', sans-serif;
+                font-family: 'Chalkboard', sans-serif;
                 font-weight: 200;
                 height: 100vh;
                 margin: 0;
@@ -86,8 +86,6 @@
 
                 <div class="links">
                     <a href="https://github.com/geeky-T/ordering">GitHub</a>
-                </div>
-                <div class="links">
                     <a href="/login">login</a>
                 </div>
             </div>
