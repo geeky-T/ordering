@@ -8,7 +8,7 @@
 Inside directory open terminal and run `./migration.sh`
 ## Contributing
 * Tirth
-* Daksh
+* Prasiddha
 * Rohit
 * Ankit
 * Himanshu
