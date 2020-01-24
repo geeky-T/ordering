@@ -18,5 +18,4 @@ use Illuminate\Http\Request;
 //});
 Route::post('login','UserLoginController@login');
 Route::post('register','UserLoginController@register');
-Route::get('search','UserOrderController@index');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 //use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserLoginController extends Controller
@@ -17,10 +18,15 @@ class UserLoginController extends Controller
             return response()->json(['error'=>'No email exists.Please register'], 401);
         }
         else {
-            return response()->json([
-                'message'=>'Welcome '.$users->name,
-                'email' => $users->email
-            ]);
+            if(Hash::check($req->password,$users->password))
+            {
+                return response('Login Successful', 200);
+            }
+            else
+                {
+                    return response('Login Failed', 401);
+                }
+
         }
     }
     function register(Request $req)
@@ -32,9 +38,10 @@ class UserLoginController extends Controller
         else
         {
             $user = new User();
-            $user->name = $req->name;
-            $user->email = $req->email;
-            $user->password = $req->password;
+            $user->name = $req->input('name');
+            $user->email = $req->input('email');
+            $user->password = $password = Hash::make($req->password);;
+            //$user->password = $password = $req->input('password');
             $user->save();
             return response()->json(['message'=>'registration success']);
         }
