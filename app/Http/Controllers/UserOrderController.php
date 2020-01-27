@@ -19,11 +19,13 @@ class UserOrderController extends Controller
         $results= DB::table('bookings as B')
             ->join('inventories as I', 'B.hotelId', '=', 'I.hotelId')
             ->select('bookingId','name','amount','location','rent','hoursOccupied')
-            ->where('userId',$request->input('userId'))->get()->toArray();
-        //console.log($results);
+            ->where('userId',(string)$request->session()->get('email'))->get()->toArray();
+            //->where('userId',"parth@example.com")->get()->toArray();
+        print_r($results);
         return $results;//this code takes the user id and shows all the required details that is required displaying
     }
 //$request->input('email')
+//$request->session()->get('email'
     /**
      * Create booking for user in available hotel.
      *
@@ -66,9 +68,9 @@ class UserOrderController extends Controller
 
 
         $results= DB::table('inventories')->select('name','location','rent')
-            ->where('isAvailable','=',true)->get();
+            ->where('isAvailable','=',true)->get()->toArray();
         //console.log($results);
-        return response()->json([$results]);
+        return $results;
 
     }
 
