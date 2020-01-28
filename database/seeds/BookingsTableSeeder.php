@@ -37,7 +37,7 @@ class BookingsTableSeeder extends Seeder
         $bookings = [];
         while(count($hotels)){
             $hotel = array_pop($hotels);
-            $hours = $faker->randomNumber();
+            $hours = $faker->randomNumber(2);
             array_push($bookings, [
                 'userId' => $faker->randomElement($users),
                 'hotelId' => $hotel['hotelId'],
@@ -56,7 +56,7 @@ class BookingsTableSeeder extends Seeder
         $hotels = $this->stdObjectToArray($hotels);
         while(count($hotels) > 0){
             $hotel = array_pop($hotels);
-            $hours = $faker->randomNumber();
+            $hours = $faker->randomNumber(2);
             array_push($bookings, [
                 'userId' => $faker->randomElement($users),
                 'hotelId' => $hotel['hotelId'],
