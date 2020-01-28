@@ -16,6 +16,7 @@ class UserOrderController extends Controller
      */
     public function index(Request $request)
     {
+
         $results= DB::table('bookings as B')
             ->join('inventories as I', 'B.hotelId', '=', 'I.hotelId')
             ->select('bookingId','name','amount','location','rent','hoursOccupied')
@@ -33,7 +34,9 @@ class UserOrderController extends Controller
      */
     public function create(Request $request)
     {
-        $request->session()->put('hotelId', $request->input('hotelId'));
+        //$request->session()->put('hotelId', $request->input('hotelId'));
+
+        Log::info($request);
         DB::table('bookings')->insert(
             [
                 ['userId'=>$request->session()->get('email'),'hotelId'=> $request->input('hotelId'),'hoursOccupied'=>1,'isActive'=>true,'amount'=>250,'created_at'=>date('Y-m-d H:i:s'),'updated_at'=>date('Y-m-d H:i:s')]
@@ -96,7 +99,7 @@ class UserOrderController extends Controller
     public function end(Request $req)
     {
         //
-        $results1=DB::table('bookings')->where('userId',$req->input('userId'))
+        $results1=DB::table('bookings')->where('userId',$req->session()->get('email'))
             ->where('hotelId',$req->input('hotelId'))
             ->update([
                 'isActive'=> 0
