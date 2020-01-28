@@ -19,7 +19,7 @@ class UserOrderController extends Controller
 
         $results= DB::table('bookings as B')
             ->join('inventories as I', 'B.hotelId', '=', 'I.hotelId')
-            ->select('bookingId','name','amount','location','rent','hoursOccupied')
+            ->select('B.hotelId','bookingId','name','location','rent','hoursOccupied')
             ->where('userId',$request->session()->get('email'))->get()->toArray();
         //->where('userId',"parth@example.com")->get()->toArray();
       //  print_r($results);
@@ -46,6 +46,7 @@ class UserOrderController extends Controller
             ->update([
                 'isAvailable'=> false
             ]);
+        return redirect('http://localhost:8081/booking');
 
     }
 //$request->session()->put('hotelId',
