@@ -37,16 +37,27 @@ class UserOrderController extends Controller
         //$request->session()->put('hotelId', $request->input('hotelId'));
 
         Log::info($request);
-        DB::table('bookings')->insert(
-            [
-                ['userId'=>$request->session()->get('email'),'hotelId'=> $request->input('hotelId'),'hoursOccupied'=>1,'isActive'=>true,'amount'=>250,'created_at'=>date('Y-m-d H:i:s'),'updated_at'=>date('Y-m-d H:i:s')]
-            ]
-        );
-        $results2=DB::table('inventories')->where('hotelId',$request->input('hotelId'))
-            ->update([
-                'isAvailable'=> false
-            ]);
-        return redirect('http://localhost:8081/booking');
+        $check=DB::table('inventories')->where('hotelId',$request->input('hotelId'))->where('isAvailable','=',true)->first();
+        if($check)
+        {
+
+            DB::table('bookings')->insert(
+                [
+                    ['userId'=>$request->session()->get('email'),'hotelId'=> $request->input('hotelId'),'hoursOccupied'=>1,'isActive'=>true,'amount'=>250,'created_at'=>date('Y-m-d H:i:s'),'updated_at'=>date('Y-m-d H:i:s')]
+                ]
+            );
+            $results2=DB::table('inventories')->where('hotelId',$request->input('hotelId'))
+                ->update([
+                    'isAvailable'=> false
+                ]);
+            return response('Please book valid hotel',201);
+        }
+        else
+        {
+            return response('Please book valid hotel',401);
+        }
+
+        //return redirect('http://localhost:8081/booking');
 
     }
 //$request->session()->put('hotelId',
