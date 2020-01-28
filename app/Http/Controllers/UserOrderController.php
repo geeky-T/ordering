@@ -6,7 +6,7 @@ use App\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+session_status();
 class UserOrderController extends Controller
 {
     /**
@@ -16,12 +16,13 @@ class UserOrderController extends Controller
      */
     public function index(Request $request)
     {
+
         $results= DB::table('bookings as B')
             ->join('inventories as I', 'B.hotelId', '=', 'I.hotelId')
-            ->select('bookingId','name','amount','location','rent','hoursOccupied')
-            ->where('userId',(string)$request->session()->get('email'))->get()->toArray();
-            //->where('userId',"parth@example.com")->get()->toArray();
-        print_r($results);
+            ->select('B.hotelId','bookingId','name','location','rent','hoursOccupied')
+            ->where('userId',$request->session()->get('email'))->get()->toArray();
+        //->where('userId',"parth@example.com")->get()->toArray();
+      //  print_r($results);
         return $results;//this code takes the user id and shows all the required details that is required displaying
     }
 //$request->input('email')
@@ -31,20 +32,24 @@ class UserOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $req)
+    public function create(Request $request)
     {
+        //$request->session()->put('hotelId', $request->input('hotelId'));
+
+        Log::info($request);
         DB::table('bookings')->insert(
             [
-                ['userId'=>$req->input('userId'),'hotelId'=>$req->input('hotelId'),'hoursOccupied'=>1,'isActive'=>true,'amount'=>250,'created_at'=>date('Y-m-d H:i:s'),'updated_at'=>date('Y-m-d H:i:s')]
+                ['userId'=>$request->session()->get('email'),'hotelId'=> $request->input('hotelId'),'hoursOccupied'=>1,'isActive'=>true,'amount'=>250,'created_at'=>date('Y-m-d H:i:s'),'updated_at'=>date('Y-m-d H:i:s')]
             ]
         );
-        $results2=DB::table('inventories')->where('hotelId',$req->input('hotelId'))
+        $results2=DB::table('inventories')->where('hotelId',$request->input('hotelId'))
             ->update([
                 'isAvailable'=> false
             ]);
+        return redirect('http://localhost:8081/booking');
 
     }
-
+//$request->session()->put('hotelId',
     /**
      * Store a newly created resource in storage.
      *
@@ -67,7 +72,7 @@ class UserOrderController extends Controller
     {
 
 
-        $results= DB::table('inventories')->select('name','location','rent')
+        $results= DB::table('inventories')->select('hotelId','name','location','rent')
             ->where('isAvailable','=',true)->get()->toArray();
         //console.log($results);
         return $results;
@@ -95,7 +100,7 @@ class UserOrderController extends Controller
     public function end(Request $req)
     {
         //
-        $results1=DB::table('bookings')->where('userId',$req->input('userId'))
+        $results1=DB::table('bookings')->where('userId',$req->session()->get('email'))
             ->where('hotelId',$req->input('hotelId'))
             ->update([
                 'isActive'=> 0

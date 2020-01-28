@@ -13,12 +13,14 @@ class UserLoginController extends Controller
     function login(Request $req)
     {
 
+
         // if not get user data from the database
         $users = User::where('email', $req->input('email'))->where('password', $req->input('password'))->first();
 
         // is user not found return bad request error
         if (is_null($users)) {
-            return response( 'Invalid Email/Password. New User ? Please Register', 401);
+
+            return response('Invalid Email/Password. New User ? Please Register', 401);
         }
         // store session and respond with ok
         else
@@ -29,12 +31,13 @@ class UserLoginController extends Controller
     }
     function register(Request $req)
     {
-        if($req->session()->has('email')) return response()->json('', '200');
+       // if($req->session()->has('email')) return response()->json('', '200');
         $users = User::where('email', $req->input('email'))->first();
 
         //checking user already exists
         if ($users) {
-            return response('Email already exists. Login please', 401);
+
+            return response(err, 401);
         }
         // if not continue the registration process
         else
